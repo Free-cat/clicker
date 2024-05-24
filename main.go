@@ -305,6 +305,11 @@ func main() {
 	go broadcastTokenIncrement()
 
 	http.HandleFunc("/ws", wsHandler)
-	log.Println("Server started at :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+	log.Println("Server started at " + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
