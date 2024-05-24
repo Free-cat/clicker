@@ -293,7 +293,7 @@ func broadcastTokenIncrement() {
 }
 
 func main() {
-	redisOpts, err := redis.ParseURL(os.Getenv("REDIS_URL"))
+	redisOpts, err := redis.ParseURL(os.Getenv("REDISCLOUD_URL"))
 	if err != nil {
 		log.Fatalf("Could not parse REDIS_URL: %v", err)
 	}
