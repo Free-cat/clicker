@@ -141,7 +141,9 @@ func getLevelProgress(tokens int, levelIndex int) float64 {
 	if levelIndex == 0 {
 		return 0
 	}
-	return float64(tokens) / float64(levels[levelIndex]) * 100
+	tokensToEarnNewLevel := levels[levelIndex] - levels[levelIndex-1]
+
+	return float64(tokens) / float64(tokensToEarnNewLevel) * 100
 }
 
 func getLevelIndex(tokens int) int {

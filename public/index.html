@@ -182,7 +182,7 @@
             tokensLeft--;
             const message = { user_id: userId, action: "click" };
             socket.send(JSON.stringify(message));
-            document.getElementById('tokensLeft').innerText = `Clicks Left: ${tokensLeft}`;
+            document.getElementById('tokensLeft').innerText = `Clicks Left: ${tokensLeft} / 500`;
         } else {
             alert('No more tokens left!');
         }
