@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #0e153a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            width: 360px;
+            text-align: center;
+            background: #1b1f38;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .container img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        .coin-count {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .level-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            width: 80%;
+            height: 10px;
+            background: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-left: 10px;
+        }
+        .progress {
+            width: 60%;
+            height: 100%;
+            background: #4caf50;
+        }
+        .boost-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            background: #ff5722;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .metrics {
+            margin: 10px 0;
+        }
+        .branding {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 340px;
+        }
+        .branding img {
+            width: 30px;
+            height: 30px;
+        }
+        .earnings {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .earnings div {
+            width: 40%;
+            background: #292d45;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="coin-count">
+        <img src="/images/dollar.png" alt="Coin" style="width: 30px; height: 30px;">
+        <span id="coinCount">0</span>
+    </div>
+    <div class="level-indicator">
+        <span id="level">Level 69</span>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+    </div>
+    <img id="levelImage" src="/images/level1.webp" alt="Hamster">
+    <button class="boost-button" id="clickButton">Click</button>
+    <div class="metrics">
+        <p id="tokensLeft">Clicks Left: 400 / 500</p>
+    </div>
+    <div class="earnings">
+        <div>
+            <p>Daily Earnings</p>
+            <p id="dailyEarnings">+6.8K</p>
+        </div>
+        <div>
+            <p>Total Earnings</p>
+            <p id="totalEarnings">10M</p>
+        </div>
+    </div>
+</div>
+<script>
+    const socket = new WebSocket('ws://localhost:8080/ws');
+    // Alert for ask user_id from user
+    let userId = prompt("Please enter your id", "1");
+    let tokensLeft = 0;
+    let tokensLimit = 500;
+    let totalClicks = 0;
+
+    socket.onopen = () => {
+        console.log('Connected to WebSocket');
+        const initialMessage = { user_id: userId };
+        socket.send(JSON.stringify(initialMessage));
+    };
+
+    socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.action === "increment_token") {
+            if (tokensLeft < tokensLimit){
+                tokensLeft++;
+                document.getElementById('tokensLeft').innerText = `Clicks Left: ${tokensLeft} / 500`;
+            }
+        } else if (data.status === "initial_data") {
+            tokensLeft = data.tokens_left;
+            tokensLimit = data.tokens_limit;
+            totalClicks = data.total_clicks;
+            document.getElementById('tokensLeft').innerText = `Clicks Left: ${tokensLeft} / 500`;
+            document.getElementById('dailyEarnings').innerText = `+${data.daily_clicks}`;
+            document.getElementById('totalEarnings').innerText = data.all_time_clicks;
+            document.getElementById('coinCount').innerText = totalClicks;
+            document.getElementById('level').innerText = `Level ${data.level}`;
+            document.getElementById('progress').style.width = `${data.progress}%`;
+            document.getElementById('levelImage').src = data.level_image
+        } else {
+            tokensLeft = data.tokens_left;
+            totalClicks = data.total_clicks;
+            document.getElementById('tokensLeft').innerText = `Clicks Left: ${tokensLeft} / 500`;
+            document.getElementById('dailyEarnings').innerText = `+${data.daily_clicks}`;
+            document.getElementById('totalEarnings').innerText = data.all_time_clicks;
+            document.getElementById('coinCount').innerText = totalClicks;
+            document.getElementById('level').innerText = `Level ${data.level}`;
+            document.getElementById('progress').style.width = `${data.progress}%`;
+            document.getElementById('levelImage').src = data.level_image
+        }
+    };
+
+    socket.onclose = () => {
+        console.log('Disconnected from WebSocket');
+    };
+
+    document.getElementById('clickButton').addEventListener('click', () => {
+        if (tokensLeft > 0) {
+            tokensLeft--;
+            const message = { user_id: userId, action: "click" };
+            socket.send(JSON.stringify(message));
+            document.getElementById('tokensLeft').innerText = `Clicks Left: ${tokensLeft}`;
+        } else {
+            alert('No more tokens left!');
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #0e153a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            width: 360px;
+            text-align: center;
+            background: #1b1f38;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .container img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        .coin-count {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .level-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            width: 80%;
+            height: 10px;
+            background: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-left: 10px;
+        }
+        .progress {
+            width: 60%;
+            height: 100%;
+            background: #4caf50;
+        }
+        .boost-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            background: #ff5722;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .metrics {
+            margin: 10px 0;
+        }
+        .branding {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 340px;
+        }
+        .branding img {
+            width: 30px;
+            height: 30px;
+        }
+        .earnings {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .earnings div {
+            width: 48%;
+            background: #292d45;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="branding">
+        <img src="binance-logo.png" alt="Binance">
+        <img src="telegram-logo.png" alt="Telegram">
+    </div>
+    <img src="hamster.png" alt="Hamster">
+    <div class="coin-count">7 777 777</div>
+    <div class="level-indicator">
+        <span>Level 69</span>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+    <button class="boost-button">Boost</button>
+    <div class="metrics">
+        <p>Clicks: 4468 / 5500</p>
+    </div>
+    <div class="earnings">
+        <div>
+            <p>Daily Earnings</p>
+            <p>+6.8K</p>
+        </div>
+        <div>
+            <p>Total Earnings</p>
+            <p>10M</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
