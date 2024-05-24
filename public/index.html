@@ -124,7 +124,12 @@
     </div>
 </div>
 <script>
-    const socket = new WebSocket('ws://localhost:8080/ws');
+    const loc = window.location;
+    let wsStart = 'ws://';
+    if (loc.protocol === 'https:') {
+        wsStart = 'wss://';
+    }
+    const socket = new WebSocket(`${wsStart}${loc.host}/ws`);
     // Alert for ask user_id from user
     let userId = prompt("Please enter your id", "1");
     let tokensLeft = 0;
