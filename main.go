@@ -115,8 +115,8 @@ func handleClick(userID string) ClickResponse {
 			Level:         levelIndex,
 			LevelProgress: levelProgress,
 			LevelImage:    levelImage,
-			DailyClicks:   dailyClicksCount,
-			AllTimeClicks: allTimeClicksCount,
+			DailyClicks:   dailyClicksCount + 1,
+			AllTimeClicks: allTimeClicksCount + 1,
 		}
 	}
 	return ClickResponse{Status: "error", TokensLeft: tokens, TotalClicks: clicks}

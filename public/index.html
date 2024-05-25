@@ -135,6 +135,9 @@
     let tokensLeft = 0;
     let tokensLimit = 500;
     let totalClicks = 0;
+    // Get token from URL
+    let authToken = loc.search.split('token=')[1];
+    console.log(authToken);
 
     socket.onopen = () => {
         console.log('Connected to WebSocket');
